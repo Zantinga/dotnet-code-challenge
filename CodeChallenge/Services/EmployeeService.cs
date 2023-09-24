@@ -59,5 +59,12 @@ namespace CodeChallenge.Services
 
             return newEmployee;
         }
+
+        public ReportingStructure GetReportingStructureById(string id)
+        {
+            //TODO: implment return of ReportingStructure
+
+            return new ReportingStructure();
+        }
     }
 }

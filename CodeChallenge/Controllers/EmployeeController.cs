@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CodeChallenge.Services;
@@ -57,6 +54,20 @@ namespace CodeChallenge.Controllers
             _employeeService.Replace(existingEmployee, newEmployee);
 
             return Ok(newEmployee);
+        }
+
+        [HttpGet("{id}/report-structure", Name = "getReportStructureById")]
+        public IActionResult GetReportingStructureById(String id)
+        {
+            _logger.LogDebug($"Recieved reporting structure get request for '{id}'");
+
+            var existingEmployee = _employeeService.GetById(id);
+            if (existingEmployee == null)
+                return NotFound();
+
+            //TODO: Implement ReportingStructure tree crawling
+
+            return Ok();
         }
     }
 }
