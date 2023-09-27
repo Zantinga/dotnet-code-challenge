@@ -41,5 +41,10 @@ namespace CodeChallenge.Repositories
         {
             return _employeeContext.Remove(employee).Entity;
         }
+
+        public int NumberOfEmployees(List<string> ids)
+        {
+            return _employeeContext.Employees.Where(x => ids.Contains(x.EmployeeId)).Count();
+        }
     }
 }

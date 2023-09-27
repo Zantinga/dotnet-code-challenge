@@ -62,9 +62,11 @@ namespace CodeChallenge.Services
 
         public ReportingStructure GetReportingStructureById(string id)
         {
+            var reportingStructure = new ReportingStructure();
+            reportingStructure.Employee = GetById(id);
             //TODO: implment return of ReportingStructure
 
-            return new ReportingStructure();
+            return reportingStructure;
         }
     }
 }

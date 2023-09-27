@@ -61,13 +61,24 @@ namespace CodeChallenge.Controllers
         {
             _logger.LogDebug($"Recieved reporting structure get request for '{id}'");
 
-            var existingEmployee = _employeeService.GetById(id);
-            if (existingEmployee == null)
-                return NotFound();
+            //var existingEmployee = _employeeService.GetById(id);
+            //if (existingEmployee == null)
+            //    return NotFound();
 
             //TODO: Implement ReportingStructure tree crawling
 
-            return Ok();
+            var reportStructure = _employeeService.GetReportingStructureById(id);
+            if (reportStructure == null)
+                return NotFound();
+
+            //TODO: Employee.DirectReports isn't working
+            var employeeReport = new ReportingStructure
+            {
+                Employee = reportStructure.Employee,
+                NumberOfReports = reportStructure.NumberOfReports
+            };
+
+            return Ok(employeeReport);
         }
     }
 }
