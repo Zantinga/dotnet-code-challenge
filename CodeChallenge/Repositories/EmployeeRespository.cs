@@ -29,7 +29,10 @@ namespace CodeChallenge.Repositories
 
         public Employee GetById(string id)
         {
-            return _employeeContext.Employees.SingleOrDefault(e => e.EmployeeId == id);
+            return _employeeContext.Employees.Where(e => e.EmployeeId == id)
+                .Include(x => x.DirectReports)
+                .FirstOrDefault();
+            //TODO: should toList()?
         }
 
         public Task SaveAsync()
@@ -42,9 +45,9 @@ namespace CodeChallenge.Repositories
             return _employeeContext.Remove(employee).Entity;
         }
 
-        public int NumberOfEmployees(List<string> ids)
-        {
-            return _employeeContext.Employees.Where(x => ids.Contains(x.EmployeeId)).Count();
-        }
+        //public int NumberOfEmployees(List<string> ids)
+        //{
+        //    return _employeeContext.Employees.Where(x => ids.Contains(x.EmployeeId)).Count();
+        //}
     }
 }

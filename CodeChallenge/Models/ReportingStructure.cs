@@ -15,7 +15,6 @@
             set
             {
                 //TODO: implement any necessary validation
-                    //fields are filled?
                 employee = value;
             }
         }
@@ -24,15 +23,9 @@
             {
                 return numberOfReports;
             }
-        }
-
-        private void calculateNumberOfReports()
-        {
-            if(employee.DirectReports != null)
+            set 
             {
-                numberOfReports += employee.DirectReports.Count;
-                //TODO: FINISH BUILDING THIS WHILE WATCHING TIDO!!!
-
+                numberOfReports = value;
             }
         }
     }

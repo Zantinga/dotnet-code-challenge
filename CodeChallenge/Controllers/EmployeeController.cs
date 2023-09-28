@@ -71,14 +71,12 @@ namespace CodeChallenge.Controllers
             if (reportStructure == null)
                 return NotFound();
 
-            //TODO: Employee.DirectReports isn't working
-            var employeeReport = new ReportingStructure
-            {
-                Employee = reportStructure.Employee,
-                NumberOfReports = reportStructure.NumberOfReports
-            };
+            //var employeeReport = new ReportingStructure
+            //{
+            //    Employee = reportStructure.Employee
+            //};
 
-            return Ok(employeeReport);
+            return Ok(reportStructure);
         }
     }
 }

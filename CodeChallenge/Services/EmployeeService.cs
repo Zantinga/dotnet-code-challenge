@@ -34,7 +34,6 @@ namespace CodeChallenge.Services
         {
             if(!String.IsNullOrEmpty(id))
             {
-                //TODO: investigate why this only returns directReports data if slowed. May need to make asynchronous
                 return _employeeRepository.GetById(id);
             }
 
@@ -65,9 +64,34 @@ namespace CodeChallenge.Services
         {
             var reportingStructure = new ReportingStructure();
             reportingStructure.Employee = GetById(id);
+            reportingStructure.NumberOfReports = calculateNumberOfDirectReports(reportingStructure.Employee);
             //TODO: implment return of ReportingStructure
+            var employee = GetById(id);
 
-            return reportingStructure;
+            return new ReportingStructure()
+            {
+                Employee = employee,
+                NumberOfReports = calculateNumberOfDirectReports(employee)
+            };
+        }
+
+        private int calculateNumberOfDirectReports(Employee employee)
+        {
+            if(employee.DirectReports?.Any() != true)
+            {
+                return 0;
+            }
+            var value = employee.DirectReports.Count();
+            foreach(var emp in employee.DirectReports ) 
+            {
+                var fullEmployee = GetById(emp.EmployeeId); 
+                if (emp != null)
+                {
+                    value += calculateNumberOfDirectReports(fullEmployee);
+                }
+            }
+
+            return value;
         }
     }
 }
