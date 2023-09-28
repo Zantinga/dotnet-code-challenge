@@ -34,6 +34,7 @@ namespace CodeChallenge.Services
         {
             if(!String.IsNullOrEmpty(id))
             {
+                //TODO: investigate why this only returns directReports data if slowed. May need to make asynchronous
                 return _employeeRepository.GetById(id);
             }
 

@@ -6,6 +6,7 @@
 
         private Employee employee;
         private int numberOfReports;
+
         public Employee Employee { 
             get
             {
@@ -23,10 +24,15 @@
             {
                 return numberOfReports;
             }
-            set
+        }
+
+        private void calculateNumberOfReports()
+        {
+            if(employee.DirectReports != null)
             {
-                //TODO: implement any necessary validation
-                numberOfReports = value;
+                numberOfReports += employee.DirectReports.Count;
+                //TODO: FINISH BUILDING THIS WHILE WATCHING TIDO!!!
+
             }
         }
     }
