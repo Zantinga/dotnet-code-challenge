@@ -62,11 +62,11 @@ namespace CodeChallenge.Services
 
         public ReportingStructure GetReportingStructureById(string id)
         {
-            //TODO: CHECK IF EMPLOYEE IS NULL
+            _logger.LogDebug($"Getting reporting structure of {id}");
             var employee = GetById(id);
             if(employee == null)
             {
-                return new ReportingStructure();
+                return null;
             }
 
             return new ReportingStructure()

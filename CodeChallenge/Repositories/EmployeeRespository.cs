@@ -32,7 +32,6 @@ namespace CodeChallenge.Repositories
             return _employeeContext.Employees.Where(e => e.EmployeeId == id)
                 .Include(x => x.DirectReports)
                 .FirstOrDefault();
-            //TODO: should toList()?
         }
 
         public Task SaveAsync()

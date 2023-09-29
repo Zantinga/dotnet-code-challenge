@@ -62,7 +62,7 @@ namespace CodeChallenge.Controllers
             _logger.LogDebug($"Received reporting structure get request for '{id}'");
 
             var reportStructure = _employeeService.GetReportingStructureById(id);
-            if (reportStructure == null || reportStructure == new ReportingStructure())
+            if (reportStructure == null)
                 return NotFound();
 
             return Ok(reportStructure);
