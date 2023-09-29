@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -128,6 +129,37 @@ namespace CodeCodeChallenge.Tests.Integration
             var postRequestTask = _httpClient.PutAsync($"api/employee/{employee.EmployeeId}",
                new StringContent(requestContent, Encoding.UTF8, "application/json"));
             var response = postRequestTask.Result;
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [TestMethod]
+        public void GetEmployeeReportStructureById_Returns_Ok()
+        {
+            // Arrange
+            var employeeId = "16a596ae-edd3-4847-99fe-c4518e82c86f";
+            var expectedNumberOfReports = 4;
+
+            // Execute
+            var getRequestTask = _httpClient.GetAsync($"api/employee/{employeeId}/report-structure");
+            var response = getRequestTask.Result;
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            var newEmployee = response.DeserializeContent<ReportingStructure>();
+            Assert.AreEqual(expectedNumberOfReports, newEmployee.NumberOfReports);
+        }
+
+        [TestMethod]
+        public void GetEmployeeReportStructureById_Returns_NotFound()
+        {
+            // Arrange
+            var employeeId = "Invalid_id";
+
+            // Execute
+            var getRequestTask = _httpClient.GetAsync($"api/employee/{employeeId}/report-structure");
+            var response = getRequestTask.Result;
 
             // Assert
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);

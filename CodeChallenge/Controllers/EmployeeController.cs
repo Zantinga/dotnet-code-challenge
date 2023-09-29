@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CodeChallenge.Services;
 using CodeChallenge.Models;
+using CodeChallenge.DTO;
 
 namespace CodeChallenge.Controllers
 {
@@ -23,13 +21,13 @@ namespace CodeChallenge.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateEmployee([FromBody] Employee employee)
+        public IActionResult CreateEmployee([FromBody] EmployeeDTO employeeDTO)
         {
-            _logger.LogDebug($"Received employee create request for '{employee.FirstName} {employee.LastName}'");
+            _logger.LogDebug($"Received employee create request for '{employeeDTO.FirstName} {employeeDTO.LastName}'");
 
-            _employeeService.Create(employee);
+            Employee newEmployee = _employeeService.Create(employeeDTO);
 
-            return CreatedAtRoute("getEmployeeById", new { id = employee.EmployeeId }, employee);
+            return CreatedAtRoute("getEmployeeById", new { id = newEmployee.EmployeeId }, newEmployee);
         }
 
         [HttpGet("{id}", Name = "getEmployeeById")]
@@ -57,6 +55,18 @@ namespace CodeChallenge.Controllers
             _employeeService.Replace(existingEmployee, newEmployee);
 
             return Ok(newEmployee);
+        }
+
+        [HttpGet("{id}/report-structure", Name = "getReportStructureById")]
+        public IActionResult GetReportingStructureById(String id)
+        {
+            _logger.LogDebug($"Received reporting structure get request for '{id}'");
+
+            var reportStructure = _employeeService.GetReportingStructureById(id);
+            if (reportStructure == null)
+                return NotFound();
+
+            return Ok(reportStructure);
         }
     }
 }

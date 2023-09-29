@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using CodeChallenge.Models;
 using Microsoft.Extensions.Logging;
 using CodeChallenge.Repositories;
+using CodeChallenge.Helpers;
+using CodeChallenge.DTO;
 
 namespace CodeChallenge.Services
 {
@@ -12,22 +14,25 @@ namespace CodeChallenge.Services
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ILogger<EmployeeService> _logger;
+        private readonly IMapper _mapper;
 
-        public EmployeeService(ILogger<EmployeeService> logger, IEmployeeRepository employeeRepository)
+        public EmployeeService(ILogger<EmployeeService> logger, IEmployeeRepository employeeRepository, IMapper mapper)
         {
             _employeeRepository = employeeRepository;
+            _mapper = mapper;
             _logger = logger;
         }
 
-        public Employee Create(Employee employee)
+        public Employee Create(EmployeeDTO employeeDTO)
         {
-            if(employee != null)
+            if(employeeDTO != null)
             {
-                _employeeRepository.Add(employee);
+                var newEmployee = _employeeRepository.Add(_mapper.EmployeeDTO_To_Employee(employeeDTO));
                 _employeeRepository.SaveAsync().Wait();
+                return newEmployee;
             }
 
-            return employee;
+            return null;
         }
 
         public Employee GetById(string id)
@@ -58,6 +63,41 @@ namespace CodeChallenge.Services
             }
 
             return newEmployee;
+        }
+
+        public ReportingStructure GetReportingStructureById(string id)
+        {
+            _logger.LogDebug($"Getting reporting structure of {id}");
+            var employee = GetById(id);
+            if(employee == null)
+            {
+                return null;
+            }
+
+            return new ReportingStructure()
+            {
+                Employee = employee,
+                NumberOfReports = calculateNumberOfDirectReports(employee)
+            };
+        }
+
+        private int calculateNumberOfDirectReports(Employee employee)
+        {
+            if(employee.DirectReports?.Any() != true)
+            {
+                return 0;
+            }
+            var value = employee.DirectReports.Count();
+            foreach(var emp in employee.DirectReports ) 
+            {
+                var fullEmployee = GetById(emp.EmployeeId); 
+                if (emp != null)
+                {
+                    value += calculateNumberOfDirectReports(fullEmployee);
+                }
+            }
+
+            return value;
         }
     }
 }
