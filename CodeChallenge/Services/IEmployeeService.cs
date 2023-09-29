@@ -1,4 +1,5 @@
-﻿using CodeChallenge.Models;
+﻿using CodeChallenge.DTO;
+using CodeChallenge.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ namespace CodeChallenge.Services
 {
     public interface IEmployeeService
     {
-        Employee GetById(String id);
-        Employee Create(Employee employee);
+        Employee GetById(string id);
+        Employee Create(EmployeeDTO employeeDTO);
         Employee Replace(Employee originalEmployee, Employee newEmployee);
         ReportingStructure GetReportingStructureById(string id);
     }

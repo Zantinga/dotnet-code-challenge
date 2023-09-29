@@ -1,6 +1,7 @@
 ﻿using System;
 
 using CodeChallenge.Data;
+using CodeChallenge.Helpers;
 using CodeChallenge.Repositories;
 using CodeChallenge.Services;
 
@@ -45,6 +46,7 @@ namespace CodeChallenge.Config
             services.AddScoped<IEmployeeRepository, EmployeeRespository>();
             services.AddScoped<ICompensationService, CompensationService>();
             services.AddScoped<ICompensationRepository, CompensationRepository>();
+            services.AddScoped<IMapper, Mapper>();
 
             services.AddControllers();
         }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CodeChallenge.Services;
 using CodeChallenge.Models;
+using CodeChallenge.DTO;
 
 namespace CodeChallenge.Controllers
 {
@@ -20,13 +21,13 @@ namespace CodeChallenge.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateEmployee([FromBody] Employee employee)
+        public IActionResult CreateEmployee([FromBody] EmployeeDTO employeeDTO)
         {
-            _logger.LogDebug($"Received employee create request for '{employee.FirstName} {employee.LastName}'");
+            _logger.LogDebug($"Received employee create request for '{employeeDTO.FirstName} {employeeDTO.LastName}'");
 
-            _employeeService.Create(employee);
+            Employee newEmployee = _employeeService.Create(employeeDTO);
 
-            return CreatedAtRoute("getEmployeeById", new { id = employee.EmployeeId }, employee);
+            return CreatedAtRoute("getEmployeeById", new { id = newEmployee.EmployeeId }, newEmployee);
         }
 
         [HttpGet("{id}", Name = "getEmployeeById")]

@@ -1,4 +1,6 @@
 ﻿using System;
+using CodeChallenge.DTO;
+using CodeChallenge.Helpers;
 using CodeChallenge.Models;
 using CodeChallenge.Repositories;
 using Microsoft.Extensions.Logging;
@@ -8,33 +10,34 @@ namespace CodeChallenge.Services
     public class CompensationService : ICompensationService
     {
         private readonly ICompensationRepository _compensationRepository;
-        private readonly IEmployeeRepository _employeeRepository;
         private readonly ILogger<CompensationService> _logger;
+        private readonly IMapper _mapper;
 
-        public CompensationService(ILogger<CompensationService> logger, ICompensationRepository compensationRepository, IEmployeeRepository employeeRepository)
+        public CompensationService(ILogger<CompensationService> logger, ICompensationRepository compensationRepository, IMapper mapper)
         {
             _logger = logger;
             _compensationRepository = compensationRepository;
-            _employeeRepository = employeeRepository;
+            _mapper = mapper;
         }
 
-        public Compensation Create(Compensation compensation)
+        public Compensation Create(CompensationDTO compensationDTO)
         {
-            if (compensation != null) 
+            if (compensationDTO != null) 
             {
-                _logger.LogDebug($"Creating compensation for employee {compensation.Employee.EmployeeId}");
-                var employee = _employeeRepository.GetById(compensation.Employee.EmployeeId);
-                if (employee == null) 
+                _logger.LogDebug($"Creating compensation for employee {compensationDTO.EmployeeId}");
+                var compensation = _mapper.CompensationDTO_To_Compensation(compensationDTO);
+                if (compensation == null) 
                 {
                     return null;
                 }
-                _compensationRepository.Add(compensation);
+                var newCompensation = _compensationRepository.Add(compensation);
                 _compensationRepository.SaveAsync();
+                return newCompensation;
             }
-            return compensation;
+            return null;
         }
 
-        public Compensation GetCompensationByEmployeeId(string id)
+        public Compensation GetByEmployeeId(string id)
         {
             if(!string.IsNullOrEmpty(id))
             {

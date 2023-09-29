@@ -1,4 +1,5 @@
-﻿using CodeChallenge.Models;
+﻿using CodeChallenge.DTO;
+using CodeChallenge.Models;
 using CodeChallenge.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,21 +20,22 @@ namespace CodeChallenge.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCompensation([FromBody] Compensation compensation)
+        public IActionResult CreateCompensation([FromBody] CompensationDTO compensationDTO)
         {
-            _logger.LogDebug($"Received compensation create request for '{compensation.Employee.FirstName} {compensation.Employee.LastName}");
-            if(compensation.Employee.EmployeeId == null)
+            _logger.LogDebug($"Received compensation create request for employee: '{compensationDTO.EmployeeId}");
+            //TODO: REPLACE THIS WITH REQUIRED
+            if(compensationDTO.EmployeeId == null)
             {
                 return BadRequest();
             }
-            Compensation newCompensation = _compensationService.Create(compensation);
+            Compensation newCompensation = _compensationService.Create(compensationDTO);
 
             if(newCompensation == null)
             {
                 return NotFound();
             }
 
-            return CreatedAtRoute("getCompensationByEmployeeId", new { id = compensation.Employee.EmployeeId }, newCompensation);
+            return CreatedAtRoute("getCompensationByEmployeeId", new { id = compensationDTO.EmployeeId }, newCompensation);
         }
 
         [HttpGet("{id}", Name = "getCompensationByEmployeeId")]
@@ -41,7 +43,7 @@ namespace CodeChallenge.Controllers
         {
             _logger.LogDebug($"Received compensation get request for employee '{id}'");
 
-            var compensation = _compensationService.GetCompensationByEmployeeId(id);
+            var compensation = _compensationService.GetByEmployeeId(id);
 
             if (compensation == null)
                 return NotFound();
