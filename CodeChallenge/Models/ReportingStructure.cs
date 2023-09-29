@@ -14,7 +14,6 @@
             }
             set
             {
-                //TODO: implement any necessary validation
                 employee = value;
             }
         }
@@ -26,7 +25,6 @@
             set 
             {
                 numberOfReports = value;
-                //TODO: VALIDATE IF NUMBEROFREPORTS IS CORRECT!!!
             }
         }
     }

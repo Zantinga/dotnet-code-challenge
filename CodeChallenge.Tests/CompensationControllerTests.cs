@@ -68,7 +68,6 @@ namespace CodeCodeChallenge.Tests.Integration
             Assert.IsNotNull(newCompensation.Employee.EmployeeId);
             Assert.AreEqual(expectedCompensation.EmployeeId, newCompensation.Employee.EmployeeId);
 
-            //TODO: check employee values?
             Assert.AreEqual(expectedEmployee.FirstName, newCompensation.Employee.FirstName);
             Assert.AreEqual(expectedEmployee.LastName, newCompensation.Employee.LastName);
             Assert.AreEqual(expectedEmployee.Department, newCompensation.Employee.Department);

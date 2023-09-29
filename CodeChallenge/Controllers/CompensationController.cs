@@ -23,7 +23,7 @@ namespace CodeChallenge.Controllers
         public IActionResult CreateCompensation([FromBody] CompensationDTO compensationDTO)
         {
             _logger.LogDebug($"Received compensation create request for employee: '{compensationDTO.EmployeeId}");
-            //TODO: REPLACE THIS WITH REQUIRED
+
             if(compensationDTO.EmployeeId == null)
             {
                 return BadRequest();
