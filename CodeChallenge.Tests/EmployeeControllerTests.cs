@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -44,7 +45,6 @@ namespace CodeCodeChallenge.Tests.Integration
                 FirstName = "Debbie",
                 LastName = "Downer",
                 Position = "Receiver",
-                //TODO: check DirectReports?
             };
 
             var requestContent = new JsonSerialization().ToJson(employee);
@@ -139,7 +139,7 @@ namespace CodeCodeChallenge.Tests.Integration
         {
             // Arrange
             var employeeId = "16a596ae-edd3-4847-99fe-c4518e82c86f";
-            //TODO: create expectedReportingStructure
+            var expectedNumberOfReports = 4;
 
             // Execute
             var getRequestTask = _httpClient.GetAsync($"api/employee/{employeeId}/report-structure");
@@ -147,7 +147,22 @@ namespace CodeCodeChallenge.Tests.Integration
 
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            //TODO: Once endpoint is built to return data, verify it is correct
+            var newEmployee = response.DeserializeContent<ReportingStructure>();
+            Assert.AreEqual(expectedNumberOfReports, newEmployee.NumberOfReports);
+        }
+
+        [TestMethod]
+        public void GetEmployeeReportStructureById_Returns_NotFound()
+        {
+            // Arrange
+            var employeeId = "Invalid_id";
+
+            // Execute
+            var getRequestTask = _httpClient.GetAsync($"api/employee/{employeeId}/report-structure");
+            var response = getRequestTask.Result;
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
     }
 }

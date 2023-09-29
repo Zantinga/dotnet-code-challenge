@@ -11,6 +11,5 @@ namespace CodeChallenge.Repositories
         Employee Add(Employee employee);
         Employee Remove(Employee employee);
         Task SaveAsync();
-        //int NumberOfEmployees(List<string> ids);
     }
 }

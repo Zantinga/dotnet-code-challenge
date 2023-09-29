@@ -59,22 +59,11 @@ namespace CodeChallenge.Controllers
         [HttpGet("{id}/report-structure", Name = "getReportStructureById")]
         public IActionResult GetReportingStructureById(String id)
         {
-            _logger.LogDebug($"Recieved reporting structure get request for '{id}'");
-
-            //var existingEmployee = _employeeService.GetById(id);
-            //if (existingEmployee == null)
-            //    return NotFound();
-
-            //TODO: Implement ReportingStructure tree crawling
+            _logger.LogDebug($"Received reporting structure get request for '{id}'");
 
             var reportStructure = _employeeService.GetReportingStructureById(id);
-            if (reportStructure == null)
+            if (reportStructure == null || reportStructure == new ReportingStructure())
                 return NotFound();
-
-            //var employeeReport = new ReportingStructure
-            //{
-            //    Employee = reportStructure.Employee
-            //};
 
             return Ok(reportStructure);
         }

@@ -62,11 +62,12 @@ namespace CodeChallenge.Services
 
         public ReportingStructure GetReportingStructureById(string id)
         {
-            var reportingStructure = new ReportingStructure();
-            reportingStructure.Employee = GetById(id);
-            reportingStructure.NumberOfReports = calculateNumberOfDirectReports(reportingStructure.Employee);
-            //TODO: implment return of ReportingStructure
+            //TODO: CHECK IF EMPLOYEE IS NULL
             var employee = GetById(id);
+            if(employee == null)
+            {
+                return new ReportingStructure();
+            }
 
             return new ReportingStructure()
             {

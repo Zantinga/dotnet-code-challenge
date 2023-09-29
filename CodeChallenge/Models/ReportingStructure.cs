@@ -26,6 +26,7 @@
             set 
             {
                 numberOfReports = value;
+                //TODO: VALIDATE IF NUMBEROFREPORTS IS CORRECT!!!
             }
         }
     }
